@@ -60,6 +60,10 @@ class Configuration(object):
         # be use
         self.target_language = 'en'
 
+        # languages for which the amount of stopwords is not a good measure 
+        # to be used when evaluating whether to remove the paragraph 
+        self.omit_stopwords_check_language = set(['fi'])
+
         # defautl stopwrods class
         self.stopwords_class = StopWords
 

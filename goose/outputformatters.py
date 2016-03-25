@@ -63,7 +63,8 @@ class OutputFormatter(object):
         self.links_to_text()
         self.add_newline_to_br()
         self.replace_with_text()
-        self.remove_fewwords_paragraphs()
+        if (not self.get_language() in self.config.omit_stopwords_check_language):
+            self.remove_fewwords_paragraphs()
         return self.convert_to_text()
 
     def convert_to_text(self):

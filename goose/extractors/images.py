@@ -228,7 +228,7 @@ class ImageExtractor(BaseExtractor):
 
         if height > width:
             diff = float(height / width)
-            if diff > 5:
+            if diff >= 3:
                 return True
 
         return False

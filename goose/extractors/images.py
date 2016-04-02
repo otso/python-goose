@@ -37,6 +37,10 @@ KNOWN_IMG_DOM_NAMES = [
     "ap-smallphoto-a",
 ]
 
+KNOWN_BAD_IMAGES = (".html|.gif|.ico|button|twitter.jpg|facebook.jpg|ap_buy_photo"
+    "|digg.jpg|digg.png|delicious.png|facebook.png|reddit.jpg"
+    "|doubleclick|diggthis|diggThis|adserver|/ads/|ec.atdmt.com"
+    "|mediaplex.com|adsatt|view.atdmt")
 
 class DepthTraversal(object):
 
@@ -66,12 +70,7 @@ class ImageExtractor(BaseExtractor):
         self.link_hash = article.link_hash
 
         # this lists all the known bad button names that we have
-        self.badimages_names_re = re.compile(
-            ".html|.gif|.ico|button|twitter.jpg|facebook.jpg|ap_buy_photo"
-            "|digg.jpg|digg.png|delicious.png|facebook.png|reddit.jpg"
-            "|doubleclick|diggthis|diggThis|adserver|/ads/|ec.atdmt.com"
-            "|mediaplex.com|adsatt|view.atdmt"
-        )
+        self.badimages_names_re = re.compile(KNOWN_BAD_IMAGES)
 
     def get_best_image(self, doc, topNode):
         image = self.check_known_elements()
@@ -326,7 +325,8 @@ class ImageExtractor(BaseExtractor):
         for item in meta:
             src = self.parser.getAttribute(item, attr='content')
             if src:
-                return self.get_image(item, src, extraction_type='opengraph')
+                if not self.badimages_names_re.search(src):
+                    return self.get_image(item, src, extraction_type='opengraph')
         return None
 
     def get_local_image(self, src):
